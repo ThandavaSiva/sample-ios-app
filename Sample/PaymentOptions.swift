@@ -68,8 +68,8 @@ class PaymentOptions : UIViewController, JuspayRequestCallBack {
     }
     
     func showAlert(errorMessage: String) {
-        let alert = UIAlertController(title: "", message: errorMessage, preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+        let alert = UIAlertController(title: "", message: errorMessage, preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
     
@@ -83,8 +83,8 @@ class PaymentOptions : UIViewController, JuspayRequestCallBack {
         }else{
             DispatchQueue.main.async {
                 self.spinner.hide()
-                let alert = UIAlertController(title: "Payment Status", message: "There seems to be some problem. Please choose a different payment options", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: {(_) in
+                let alert = UIAlertController(title: "Payment Status", message: "There seems to be some problem. Please choose a different payment options", preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: {(_) in
                     _ = self.navigationController?.popViewController(animated: true)
                 }))
                 self.present(alert, animated: true, completion: nil)

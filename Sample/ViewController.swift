@@ -61,14 +61,14 @@ class ViewController: UIViewController, OrderRequestCallBack, UITextFieldDelegat
         self.textField = self.nameTextField
 
         //Set observer to handle keybaord navigations
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
     }
     
     func addNotificationToRecievePaymentCompletion(){
         NotificationCenter.default.addObserver(self, selector: #selector(self.paymentCompletionCallBack), name: NSNotification.Name("INSTAMOJO"), object: nil)
     }
     
-    func paymentCompletionCallBack() {
+    @objc func paymentCompletionCallBack() {
         if UserDefaults.standard.value(forKey: "USER-CANCELLED") != nil {
             self.showAlert(errorMessage: "Transaction cancelled by user, back button was pressed.")
         }
@@ -87,8 +87,8 @@ class ViewController: UIViewController, OrderRequestCallBack, UITextFieldDelegat
         }
     }
     
-    func keyboardWillShow(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             keyboardHeight = Int(keyboardSize.height) - 100
         }
     }
@@ -127,7 +127,7 @@ class ViewController: UIViewController, OrderRequestCallBack, UITextFieldDelegat
         request.httpMethod = "POST"
         let session = URLSession.shared
         let params = ["env": environment[selectedEnv.text!]]
-        request.setBodyContent(parameters: params)
+        request.setBodyContent(parameters: params as [String : Any])
         request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
@@ -214,8 +214,8 @@ class ViewController: UIViewController, OrderRequestCallBack, UITextFieldDelegat
     }
     
     func showAlert(errorMessage: String) {
-        let alert = UIAlertController(title: "", message: errorMessage, preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+        let alert = UIAlertController(title: "", message: errorMessage, preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
     
